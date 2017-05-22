@@ -19,6 +19,7 @@ package org.springframework.boot.loader.jar;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.zip.ZipEntry;
@@ -61,7 +62,7 @@ public final class JarEntryData {
 	public JarEntryData(JarFile source, byte[] header, InputStream inputStream)
 			throws IOException {
 		this.source = source;
-		this.header = header;
+		this.header = header != null && header.length > 0 ? Arrays.copyOf(header, header.length) : null;
 		long nameLength = Bytes.littleEndianValue(header, 28, 2);
 		long extraLength = Bytes.littleEndianValue(header, 30, 2);
 		long commentLength = Bytes.littleEndianValue(header, 32, 2);
@@ -184,7 +185,10 @@ public final class JarEntryData {
 	}
 
 	public byte[] getExtra() {
-		return this.extra;
+		if(this.extra == null) {
+			return null;
+		}
+		return this.extra.length == 0 ? new byte[0] : Arrays.copyOf(this.extra, this.extra.length);
 	}
 
 	public AsciiBytes getComment() {

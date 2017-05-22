@@ -20,7 +20,9 @@ import java.io.File;
 import java.lang.reflect.Constructor;
 import java.net.URI;
 import java.net.URL;
+import java.security.AccessController;
 import java.security.CodeSource;
+import java.security.PrivilegedAction;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
@@ -88,8 +90,13 @@ public abstract class Launcher {
 	 * @return the classloader
 	 * @throws Exception
 	 */
-	protected ClassLoader createClassLoader(URL[] urls) throws Exception {
-		return new LaunchedURLClassLoader(urls, getClass().getClassLoader());
+	protected ClassLoader createClassLoader(final URL[] urls) throws Exception {
+		 return AccessController.doPrivileged( new PrivilegedAction<ClassLoader>() {
+			@Override
+			public ClassLoader run() {
+				return new LaunchedURLClassLoader(urls, getClass().getClassLoader());
+			}
+		 });
 	}
 
 	/**

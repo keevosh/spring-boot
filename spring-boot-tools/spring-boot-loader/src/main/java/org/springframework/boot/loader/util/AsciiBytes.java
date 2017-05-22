@@ -17,6 +17,7 @@
 package org.springframework.boot.loader.util;
 
 import java.nio.charset.Charset;
+import java.util.Arrays;
 
 /**
  * Simple wrapper around a byte array that represents an ASCII. Used for performance
@@ -69,7 +70,8 @@ public final class AsciiBytes {
 		if (offset < 0 || length < 0 || (offset + length) > bytes.length) {
 			throw new IndexOutOfBoundsException();
 		}
-		this.bytes = bytes;
+		this.bytes = bytes == null || bytes.length == 0 ? new byte[0] : Arrays.copyOf(bytes, bytes.length);	
+		 
 		this.offset = offset;
 		this.length = length;
 	}

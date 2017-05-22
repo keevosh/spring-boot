@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.springframework.boot</groupId>
 	<artifactId>spring-boot-build</artifactId>
-	<version>1.2.7.RELEASE</version>
+	<version>1.2.7.RELEASE-PATCH</version>
 	<packaging>pom</packaging>
 	<name>Spring Boot Build</name>
 	<description>Spring Boot Build</description>
@@ -49,6 +49,18 @@
 	<properties>
 		<main.basedir>${basedir}</main.basedir>
 	</properties>
+	<distributionManagement>
+	        <repository>
+	        <id>maven-s3-pccw-release-repo</id>
+	        <name>Release Repository for VIM</name>
+	        <url>s3://repo-pccw-vim-us/release</url>
+	        </repository>
+	        <snapshotRepository>
+	        <id>maven-s3-pccw-snapshot-repo</id>
+	        <name>Snapshot Repository for VIM</name>
+	        <url>s3://repo-pccw-vim-us/snapshot</url>
+	        </snapshotRepository>
+	</distributionManagement>	
 	<build>
 		<pluginManagement>
 			<plugins>
@@ -70,6 +82,13 @@
 
 			</plugins>
 		</pluginManagement>
+		<extensions>
+            <extension>
+                <groupId>org.springframework.build</groupId>
+                <artifactId>aws-maven</artifactId>
+                <version>5.0.0.RELEASE</version>
+            </extension>
+        </extensions>		
 	</build>
 	<profiles>
 		<profile>
